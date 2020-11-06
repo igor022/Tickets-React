@@ -51,7 +51,7 @@ const TicketCard: React.FC<Props> = (props) => {
           </div>
         </div>
   
-        <div className="border-2 border-gray-800 rounded-t overflow-hidden mt-4">
+        <div className="border-2 border-gray-800 rounded-t overflow-hidden my-4">
           <div className="bg-gray-800 px-2 py-1 font-bold">
             <h6>Asset</h6>
           </div>

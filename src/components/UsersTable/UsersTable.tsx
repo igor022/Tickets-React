@@ -22,7 +22,7 @@ const UsersTable: React.FC<Props> = (props) => {
       <div className="flex flex-col">
       {
         tickets.map((ticket) => (
-          <UserRow ticket={ticket} selectTicket={props.selectTicket} selected={ticket.ticketId === props.selected}/>
+          <UserRow key={ticket.ticketId} ticket={ticket} selectTicket={props.selectTicket} selected={ticket.ticketId === props.selected}/>
         ))
       } 
       </div>
