@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@import '../components/TicketImage/TicketImage.scss';
+
+@tailwind utilities;
+
+.red {
+  @apply text-gray-100 border-b-4 border-purple-500
+}
