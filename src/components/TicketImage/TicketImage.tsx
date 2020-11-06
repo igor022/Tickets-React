@@ -8,12 +8,12 @@ interface Props {
 }
 
 const TicketImage: React.FC<Props> = (props) => {
-  const cxImage = cx("w-10 h-10 bg-gray-500 rounded-full overflow-hidden", {
+  const cxImage = cx("w-8 h-8 bg-gray-500 rounded-full overflow-hidden", {
     "w-16 h-16": props.size === 'lg'
   })
   return (
     <div className={cxImage}>
-      <img className="w-full h-full  " alt="owner" src={props.imageUrl}></img>
+      <img className="w-full h-full " alt="owner" src={props.imageUrl}></img>
     </div>
   )
 }
