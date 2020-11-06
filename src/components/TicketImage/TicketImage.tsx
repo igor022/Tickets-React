@@ -13,7 +13,7 @@ const TicketImage: React.FC<Props> = (props) => {
   })
   return (
     <div className={cxImage}>
-      <img className="w-full h-full " alt="owner" src={props.imageUrl}></img>
+      <img className="w-full h-full" alt="owner" src={props.imageUrl}></img>
     </div>
   )
 }
