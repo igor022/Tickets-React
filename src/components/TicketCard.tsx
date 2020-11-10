@@ -93,6 +93,19 @@ const TicketCard: React.FC<Props> = (props) => {
           </div>
         </div>
       </TicketCardSection>
+
+      <div className="py-2"></div>
+
+      <TicketCardSection header="Location">
+        <div className="flex justify-center">
+          <div className="leaflet-container">
+            <Map
+              position={[ticket.asset.kmFrom, ticket.asset.kmTo]}
+              asset={ticket.asset}
+            />
+          </div>
+        </div>
+      </TicketCardSection>
     </div>
   ) : (
     <div>Should be a ticket</div>
