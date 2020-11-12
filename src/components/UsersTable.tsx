@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import UserRow from "./UserRow";
-import TableGap from "./TableGap";
 import { Ticket } from "../types/types";
 
 interface Props {

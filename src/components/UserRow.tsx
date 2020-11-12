@@ -2,7 +2,6 @@ import React from "react";
 import { Ticket } from "../types/types";
 import TicketImage from "./TicketImage";
 import Status from "./Status";
-import TableGap from "./TableGap";
 
 import { convertDate } from "../utils/utils";
 import cx from "classnames";
