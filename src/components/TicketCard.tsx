@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
 import { Ticket } from "../types/types";
-import { getTicketById, getTickets } from "../api/ticketsApi";
+import { getTicketById, editTicketById } from "../api/ticketsApi";
 
 import TicketImage from "./TicketImage";
 import Location from "./Location";
@@ -14,23 +14,39 @@ import TicketCardSection from "./TicketCardSection";
 import { convertDate } from "../utils/utils";
 
 interface Props {
-  selectTicket: (id: number) => void;
+  updateTickets: () => Promise<void>;
 }
+
+const statusOptions = ["unassigned", "assigned", "completed"];
 
 const TicketCard: React.FC<Props> = (props) => {
   const { id } = useParams() as any;
   const [ticket, setTicket] = useState<Ticket | undefined>(undefined);
+  const [open, setOpen] = useState<boolean>(false);
+
+  const toggle = () => {
+    setOpen(!open);
+  };
+
+  const selectStatus = useCallback(
+    async (e: any) => {
+      setOpen(!open);
+      editTicketById(id, { status: e.target.innerText });
+    },
+    [open, id]
+  );
 
   useEffect(() => {
-    (async function () {
+    const getTicket = async () => {
       const data: Ticket = await getTicketById(+id);
 
       setTicket(data);
       if (data) {
-        props.selectTicket(data.ticketId);
+        props.updateTickets();
       }
-    })();
-  }, [id]);
+    };
+    getTicket();
+  }, [id, selectStatus]);
 
   return ticket ? (
     <div className="px-4">
@@ -39,7 +55,7 @@ const TicketCard: React.FC<Props> = (props) => {
           TICKET NO. <span className="text-primary-500">{ticket.number}</span>
         </p>
         <p className="text-primary-500">
-          LAST UPDATED <span>{convertDate(ticket.lastUpdatedTime)}</span>
+          LAST UPDATED <span>{convertDate(ticket.lastUpdateTime)}</span>
         </p>
       </div>
 
@@ -67,7 +83,17 @@ const TicketCard: React.FC<Props> = (props) => {
             <p className="">{convertDate(ticket.reportedTime)}</p>
           </div>
           <div className="my-5">
-            <p className="text-primary-500">Status</p>
+            <div className="flex">
+              <p className="text-primary-500">Status</p>
+              <button onClick={toggle}>▼</button>
+            </div>
+            <ul className={`bg-primary-200 ${open ? "visible" : "hidden"}`}>
+              {statusOptions.map((s) => (
+                <li>
+                  <button onClick={selectStatus}>{s}</button>
+                </li>
+              ))}
+            </ul>
             <Status status={ticket.status} />
           </div>
           <div className="">

@@ -7,7 +7,7 @@ export interface Speciality {
 export interface Ticket {
   ticketId: number;
   number: string;
-  lastUpdatedTime: string;
+  lastUpdateTime: string;
   owner: {
     userId: number;
     firstName: string;

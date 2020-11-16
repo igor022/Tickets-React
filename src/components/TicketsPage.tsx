@@ -15,7 +15,6 @@ import TicketCard from "./TicketCard";
 import Search from "./Search";
 
 import { Ticket } from "../types/types";
-import { TypePredicateKind } from "typescript";
 
 interface Props {}
 
@@ -47,12 +46,13 @@ const TicketsPage = (props: Props) => {
     setId(id);
   };
 
+  const updateTickets = async (): Promise<void> => {
+    const data = await getTickets();
+    setTickets(data);
+  };
+
   useEffect(() => {
-    async function loadTickets() {
-      const data = await getTickets();
-      setTickets(data);
-    }
-    loadTickets();
+    updateTickets();
   }, []);
 
   useEffect(() => {}, [id, tickets]);
@@ -70,7 +70,7 @@ const TicketsPage = (props: Props) => {
       <div className="ml-5 w-full bg-primary-300">
         <Switch>
           <Route path={`/ticket/:id`}>
-            <TicketCard selectTicket={selectTicket} />
+            <TicketCard updateTickets={updateTickets} />
           </Route>
           <Route path="/ticket">
             <div className="h-full flex flex-col items-center justify-center">
