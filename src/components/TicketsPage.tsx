@@ -49,9 +49,7 @@ const TicketsPage = (props: Props) => {
 
   useEffect(() => {
     async function loadTickets() {
-      const { data } = await axios.get(
-        "https://raw.githubusercontent.com/Tapify/public-code-test/master/web-ui-test/tickets.json"
-      );
+      const data = await getTickets();
       setTickets(data);
     }
     loadTickets();

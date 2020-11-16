@@ -26,10 +26,12 @@ const UserRow: React.FC<Props> = (props) => {
     <div className={cxRow} onClick={() => props.selectTicket(ticket.ticketId)}>
       <div className="flex align-middle h-12 w-full items-center border-b border-primary-100 ">
         <div className="w-12 pr-1">
-          <TicketImage imageUrl={ticket.owner.avatar} />
+          <TicketImage imageUrl={ticket.owner ? ticket.owner.avatar : ""} />
         </div>
         <div className="flex-1 px-1">{convertDate(ticket.reportedTime)}</div>
-        <div className="flex-1 px-1">{ticket.asset.name}</div>
+        <div className="flex-1 px-1">
+          {ticket.asset ? ticket.asset.name : "-"}
+        </div>
         <div className="flex-1 pl-1 text-right">
           <Status status={ticket.status} />
         </div>

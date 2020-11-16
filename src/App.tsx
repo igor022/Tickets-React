@@ -18,7 +18,7 @@ function App() {
     <BrowserRouter>
       <div className="p-4 bg-primary-100 text-gray-400 text-sm min-h-screen">
         <NavBar />
-        <Route path="/ticket" component={TicketsPage} />
+        <Route path="/" component={TicketsPage} />
       </div>
     </BrowserRouter>
   );

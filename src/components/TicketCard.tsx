@@ -3,7 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 import { Ticket } from "../types/types";
-import { getTickets } from "../api/ticketsApi";
+import { getTicketById, getTickets } from "../api/ticketsApi";
 
 import TicketImage from "./TicketImage";
 import Location from "./Location";
@@ -23,11 +23,11 @@ const TicketCard: React.FC<Props> = (props) => {
 
   useEffect(() => {
     (async function () {
-      const tickets = await getTickets();
-      const selectedTicket = tickets.find((t) => t.ticketId == id);
-      setTicket(selectedTicket);
-      if (selectedTicket) {
-        props.selectTicket(selectedTicket.ticketId);
+      const data: Ticket = await getTicketById(+id);
+
+      setTicket(data);
+      if (data) {
+        props.selectTicket(data.ticketId);
       }
     })();
   }, [id]);
@@ -43,19 +43,21 @@ const TicketCard: React.FC<Props> = (props) => {
         </p>
       </div>
 
-      <TicketCardSection header="Owner">
-        <div className="flex items-center">
-          <TicketImage imageUrl={ticket.owner.avatar} size="lg" />
-          <div className="ml-3">
-            <p>
-              {ticket.owner.firstName} {ticket.owner.lastName}
-            </p>
-            <p className="uppercase text-xs">
-              {ticket.owner.specialities.join(" ")}
-            </p>
+      {ticket.owner ? (
+        <TicketCardSection header="Owner">
+          <div className="flex items-center">
+            <TicketImage imageUrl={ticket.owner.avatar} size="lg" />
+            <div className="ml-3">
+              <p>
+                {ticket.owner.firstName} {ticket.owner.lastName}
+              </p>
+              <p className="uppercase text-xs">
+                {ticket.owner.specialities.map((s) => s.name).join(" ")}
+              </p>
+            </div>
           </div>
-        </div>
-      </TicketCardSection>
+        </TicketCardSection>
+      ) : null}
 
       <div className="py-2"></div>
       <TicketCardSection header="Details">
@@ -76,36 +78,40 @@ const TicketCard: React.FC<Props> = (props) => {
       </TicketCardSection>
       <div className="py-2"></div>
 
-      <TicketCardSection header="Asset">
-        <div>
-          <p className="text-primary-500">Name</p>
-          <p className="">{ticket.asset.name}</p>
-        </div>
-        <div className="my-5">
-          <p className="text-primary-500">GeoCode</p>
-          <p className="">{ticket.asset.geoCode}</p>
-        </div>
-        <div>
-          <p className="text-primary-500">Location</p>
-          <div className="flex">
-            <Location coord={ticket.asset.kmFrom} />
-            <Location coord={ticket.asset.kmTo} />
-          </div>
-        </div>
-      </TicketCardSection>
+      {ticket.asset ? (
+        <>
+          <TicketCardSection header="Asset">
+            <div>
+              <p className="text-primary-500">Name</p>
+              <p className="">{ticket.asset.name}</p>
+            </div>
+            <div className="my-5">
+              <p className="text-primary-500">GeoCode</p>
+              <p className="">{ticket.asset.geoCode}</p>
+            </div>
+            <div>
+              <p className="text-primary-500">Location</p>
+              <div className="flex">
+                <Location coord={ticket.asset.kmFrom} />
+                <Location coord={ticket.asset.kmTo} />
+              </div>
+            </div>
+          </TicketCardSection>
 
-      <div className="py-2"></div>
+          <div className="py-2"></div>
 
-      <TicketCardSection header="Location">
-        <div className="flex justify-center">
-          <div className="leaflet-container">
-            <Map
-              position={[ticket.asset.kmFrom, ticket.asset.kmTo]}
-              asset={ticket.asset}
-            />
-          </div>
-        </div>
-      </TicketCardSection>
+          <TicketCardSection header="Location">
+            <div className="flex justify-center">
+              <div className="leaflet-container">
+                <Map
+                  position={[ticket.asset.kmFrom, ticket.asset.kmTo]}
+                  asset={ticket.asset}
+                />
+              </div>
+            </div>
+          </TicketCardSection>
+        </>
+      ) : null}
     </div>
   ) : (
     <div>Should be a ticket</div>
